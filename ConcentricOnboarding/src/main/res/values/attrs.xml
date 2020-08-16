@@ -2,5 +2,9 @@
 <resources>
     <declare-styleable name="ConcentricOnboardingViewPager">
         <attr name="scrollerDuration" format="integer" />
+        <attr name="mode" format="enum">
+            <enum name="slide" value="0" />
+            <enum name="reveal" value="1" />
+        </attr>
     </declare-styleable>
 </resources>

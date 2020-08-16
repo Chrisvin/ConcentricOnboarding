@@ -26,8 +26,7 @@ class ConcentricOnboardingViewPager : ViewPager {
     }
 
     private fun initialize(context: Context, attrs: AttributeSet?) {
-        setPageTransformer(true, ConcentricOnboardingPageTransformer())
-
+        var mode = DEFAULT_MODE
         var scrollerDuration = DEFAULT_SCROLLER_DURATION
         attrs?.let {
             val typedArray =
@@ -37,9 +36,19 @@ class ConcentricOnboardingViewPager : ViewPager {
                     R.styleable.ConcentricOnboardingViewPager_scrollerDuration,
                     DEFAULT_SCROLLER_DURATION
                 )
+                val modeInteger = getInt(
+                    R.styleable.ConcentricOnboardingViewPager_mode,
+                    0
+                )
+                mode = when (modeInteger) {
+                    0 -> Mode.SLIDE
+                    1 -> Mode.REVEAL
+                    else -> DEFAULT_MODE
+                }
             }
         }
         setDuration(scrollerDuration)
+        setMode(mode)
     }
 
     /**
@@ -54,16 +63,32 @@ class ConcentricOnboardingViewPager : ViewPager {
         mScroller.set(this, scroller)
     }
 
-    companion object Constants {
-        private const val DEFAULT_SCROLLER_DURATION = 1000
+    /**
+     * Set the mode for the ConcentricOnboarding swipe animation
+     * @param mode Can be either Mode.REVEAL or Mode.SLIDE
+     */
+    public fun setMode(mode: ConcentricOnboardingViewPager.Mode) {
+        setPageTransformer(true, ConcentricOnboardingPageTransformer(mode))
+    }
+
+    /** ConcentricOnboarding animation mode */
+    enum class Mode {
+        SLIDE, REVEAL
+    }
+
+    internal companion object Constants {
+        internal const val DEFAULT_SCROLLER_DURATION = 1000
+        internal val DEFAULT_MODE = Mode.SLIDE
     }
 
     /**
      * `ConcentricOnboardingPageTransformer` is a custom [ViewPager.PageTransformer] that is used for ConcentricOnboarding reveal.
      */
-    class ConcentricOnboardingPageTransformer : ViewPager.PageTransformer {
+    class ConcentricOnboardingPageTransformer(val mode: ConcentricOnboardingViewPager.Mode) :
+        ViewPager.PageTransformer {
         override fun transformPage(page: View, position: Float) {
             if (page is ConcentricOnboardingLayout) {
+                page.mode = mode
                 when {
                     position < -1 -> {
                         page.revealForPercentage(0f)
