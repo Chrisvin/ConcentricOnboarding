@@ -16,6 +16,7 @@ class ConcentricOnboardingClipPathProvider : ClipPathProvider() {
     private val BASE_RADIUS = 0
     private val LIMIT = 50
 
+    var radius = BASE_RADIUS
     var centerPoint = PointF()
 
     override fun getPath(percent: Float, view: View): Path {
@@ -34,12 +35,12 @@ class ConcentricOnboardingClipPathProvider : ClipPathProvider() {
         if (progress < 0.01f) {
             return Path()
         }
-        val r = BASE_RADIUS + 1.25.pow(progress.toDouble())
+        val r = radius + 1.25.pow(progress.toDouble())
             .coerceAtMost(max(view.width, view.height).toDouble() * 100)
-        val delta = ((1 - progress / LIMIT) * BASE_RADIUS)
+        val delta = ((1 - progress / LIMIT) * radius)
         return Path().apply {
             addCircle(
-                /*x = */(centerPoint.x + (r + BASE_RADIUS - delta)).toFloat(),
+                /*x = */(centerPoint.x + (r + radius - delta)).toFloat(),
                 /*y = */centerPoint.y,
                 /*radius = */r.toFloat(),
                 Path.Direction.CW
@@ -51,12 +52,12 @@ class ConcentricOnboardingClipPathProvider : ClipPathProvider() {
         if (progress > LIMIT - 0.01f) {
             return Path()
         }
-        val r = BASE_RADIUS + 1.25.pow((LIMIT - progress).toDouble())
+        val r = radius + 1.25.pow((LIMIT - progress).toDouble())
             .coerceAtMost(max(view.width, view.height).toDouble() * 100)
-        val delta = (progress / LIMIT) * BASE_RADIUS
+        val delta = (progress / LIMIT) * radius
         return Path().apply {
             addCircle(
-                /*x = */(centerPoint.x - r + BASE_RADIUS + delta).toFloat(),
+                /*x = */(centerPoint.x - r + radius + delta).toFloat(),
                 /*y = */centerPoint.y,
                 /*radius = */r.toFloat(),
                 Path.Direction.CW
