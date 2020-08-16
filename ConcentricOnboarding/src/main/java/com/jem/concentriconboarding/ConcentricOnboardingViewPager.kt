@@ -1,6 +1,7 @@
 package com.jem.concentriconboarding
 
 import android.content.Context
+import android.graphics.PointF
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.DecelerateInterpolator
@@ -29,6 +30,8 @@ class ConcentricOnboardingViewPager : ViewPager {
      * (to be used when values need to be changed without triggering of `updatePageTransformer`)
      */
     private var _mode: ConcentricOnboardingViewPager.Mode = DEFAULT_MODE
+    private var _revealCenterPoint: PointF = DEFAULT_REVEAL_CENTER_POINT
+    private var _revealRadius: Int = DEFAULT_REVEAL_RADIUS
     private var _scaleXFactor: Float = DEFAULT_SCALE_FACTOR
     private var _scaleYFactor: Float = DEFAULT_SCALE_FACTOR
     private var _translationXFactor: Float = DEFAULT_TRANSLATION_X_FACTOR
@@ -41,6 +44,30 @@ class ConcentricOnboardingViewPager : ViewPager {
         get() = _mode
         set(value) {
             _mode = value
+            updatePageTransformer()
+        }
+
+    /**
+     * Center of the initial/final reveal circle
+     */
+    var revealCenterPoint: PointF?
+        get() = _revealCenterPoint
+        set(value) {
+            if (value != null) {
+                _revealCenterPoint = value
+            } else {
+                _revealCenterPoint = DEFAULT_REVEAL_CENTER_POINT
+            }
+            updatePageTransformer()
+        }
+
+    /**
+     * Radius of the initial/final reveal circle
+     */
+    var revealRadius: Int
+        get() = _revealRadius
+        set(value) {
+            _revealRadius = value
             updatePageTransformer()
         }
 
@@ -93,7 +120,9 @@ class ConcentricOnboardingViewPager : ViewPager {
                 scaleXFactor,
                 scaleYFactor,
                 translationXFactor,
-                translationYFactor
+                translationYFactor,
+                revealCenterPoint,
+                revealRadius
             )
         )
     }
@@ -161,6 +190,10 @@ class ConcentricOnboardingViewPager : ViewPager {
         internal const val DEFAULT_SCALE_FACTOR = 0.5f
         internal const val DEFAULT_TRANSLATION_X_FACTOR = 2f
         internal const val DEFAULT_TRANSLATION_Y_FACTOR = 0.35f
+        internal const val DEFAULT_REVEAL_RADIUS = 0
+        // Center point get's converted to view center internally in COClipPathProvider,
+        // by checking for Float.MIN_VALUE
+        internal val DEFAULT_REVEAL_CENTER_POINT = PointF(Float.MIN_VALUE, Float.MIN_VALUE)
         internal val DEFAULT_MODE = Mode.SLIDE
     }
 
@@ -172,12 +205,18 @@ class ConcentricOnboardingViewPager : ViewPager {
         val scaleXFactor: Float,
         val scaleYFactor: Float,
         val translationXFactor: Float,
-        val translationYFactor: Float
+        val translationYFactor: Float,
+        val revealCenterPoint: PointF?,
+        val revealRadius: Int
     ) :
         ViewPager.PageTransformer {
         override fun transformPage(page: View, position: Float) {
             if (page is ConcentricOnboardingLayout) {
                 page.mode = mode
+                revealCenterPoint?.let {
+                    page.setCenterPoint(it)
+                }
+                page.setRadius(revealRadius)
                 when {
                     position < -1 -> {
                         page.revealForPercentage(0f)

@@ -39,12 +39,21 @@ interface ConcentricOnboardingLayout {
     /**
      * Set the center point of the reveal animation
      */
-    private fun setCenterPoint(centerPoint: PointF): Boolean {
+    fun setCenterPoint(centerPoint: PointF): Boolean {
         return if (clipPathProvider is ConcentricOnboardingClipPathProvider) {
             (clipPathProvider as ConcentricOnboardingClipPathProvider).centerPoint = centerPoint
             true
         } else {
             false
+        }
+    }
+
+    /**
+     * Set the radius of the initial/final reveal animation circle
+     */
+    fun setRadius(radius: Int) {
+        if (clipPathProvider is ConcentricOnboardingClipPathProvider) {
+            (clipPathProvider as ConcentricOnboardingClipPathProvider).radius = radius
         }
     }
 }

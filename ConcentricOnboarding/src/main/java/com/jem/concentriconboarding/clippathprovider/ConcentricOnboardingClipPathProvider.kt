@@ -17,11 +17,15 @@ class ConcentricOnboardingClipPathProvider : ClipPathProvider() {
     private val LIMIT = 50
 
     var radius = BASE_RADIUS
-    var centerPoint = PointF()
+    var centerPoint = PointF(Float.MIN_VALUE, Float.MIN_VALUE)
 
     override fun getPath(percent: Float, view: View): Path {
-        centerPoint.x = view.width.toFloat() / 2
-        centerPoint.y = view.height.toFloat() / 2
+        if (centerPoint.x == Float.MIN_VALUE) {
+            centerPoint.x = view.width.toFloat() / 2
+        }
+        if (centerPoint.y == Float.MIN_VALUE) {
+            centerPoint.y = view.height.toFloat() / 2
+        }
         if (percent > LIMIT) {
             op = Region.Op.DIFFERENCE
             return getRightCirclePath(100f - percent, view)
