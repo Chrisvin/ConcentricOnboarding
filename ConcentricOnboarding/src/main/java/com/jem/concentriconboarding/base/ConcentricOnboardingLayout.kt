@@ -1,6 +1,7 @@
 package com.jem.concentriconboarding.base
 
 import android.graphics.PointF
+import com.jem.concentriconboarding.ConcentricOnboardingViewPager
 import com.jem.concentriconboarding.clippathprovider.ConcentricOnboardingClipPathProvider
 
 /**
@@ -14,7 +15,20 @@ interface ConcentricOnboardingLayout {
     /** Percentage of the view currently revealed. */
     var currentRevealPercent: Float
 
-    var canvasTranslateX: Float
+    /** Animation mode (REVEAL or SLIDE) used to animate views. Automatically set by viewpager. */
+    var mode: ConcentricOnboardingViewPager.Mode
+
+    /** X-axis translation applied to layout children alone in SLIDE mode. Automatically set by viewpager. */
+    var childrenTranslateX: Float
+
+    /** Y-axis translation applied to layout children alone in SLIDE mode. Automatically set by viewpager. */
+    var childrenTranslateY: Float
+
+    /** X-axis scale applied to layout children alone in SLIDE mode. Automatically set by viewpager. */
+    var childrenScaleX: Float
+
+    /** Y-axis scale applied to layout children alone in SLIDE mode. Automatically set by viewpager. */
+    var childrenScaleY: Float
 
     /**
      * Update view to specified reveal percentage.

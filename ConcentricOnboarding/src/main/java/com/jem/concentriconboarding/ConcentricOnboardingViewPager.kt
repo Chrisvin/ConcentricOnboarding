@@ -95,12 +95,34 @@ class ConcentricOnboardingViewPager : ViewPager {
                     }
                     position < 0 -> {
                         page.translationX = -(page.width * position)
-                        page.canvasTranslateX = (page.width * position) * 2
+                        if (mode == Mode.SLIDE) {
+                            page.childrenTranslateX = (page.width * position) * 2
+                            page.childrenTranslateY = -(page.height * position) * 0.35f
+                            page.childrenScaleX = 1.0f + (0.5f * position)
+                            page.childrenScaleY = 1.0f + (0.5f * position)
+                        } else {
+                            page.childrenTranslateX = 0f
+                            page.childrenTranslateY = 0f
+                            page.childrenScaleY = 1.0f
+                            page.childrenScaleX = 1.0f
+                        }
+                        page.invalidate()
                         page.revealForPercentage(100 - abs(position * 100))
                     }
                     position <= 1 -> {
                         page.translationX = -(page.width * position)
-                        page.canvasTranslateX = (page.width * position) * 2
+                        if (mode == Mode.SLIDE) {
+                            page.childrenTranslateX = (page.width * position) * 2
+                            page.childrenTranslateY = (page.height * position) * 0.35f
+                            page.childrenScaleX = 1.0f - (0.5f * position)
+                            page.childrenScaleY = 1.0f - (0.5f * position)
+                        } else {
+                            page.childrenTranslateX = 0f
+                            page.childrenTranslateY = 0f
+                            page.childrenScaleY = 1.0f
+                            page.childrenScaleX = 1.0f
+                        }
+                        page.invalidate()
                         page.revealForPercentage(100f)
                     }
                 }

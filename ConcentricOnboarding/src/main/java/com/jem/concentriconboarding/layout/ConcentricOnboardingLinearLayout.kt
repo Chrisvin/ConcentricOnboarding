@@ -7,6 +7,7 @@ import android.os.Build
 import android.util.AttributeSet
 import android.widget.LinearLayout
 import androidx.annotation.RequiresApi
+import com.jem.concentriconboarding.ConcentricOnboardingViewPager
 import com.jem.concentriconboarding.base.ClipPathProvider
 import com.jem.concentriconboarding.base.ConcentricOnboardingLayout
 import com.jem.concentriconboarding.clippathprovider.ConcentricOnboardingClipPathProvider
@@ -21,7 +22,12 @@ open class ConcentricOnboardingLinearLayout : LinearLayout, ConcentricOnboarding
     // Backing fields for ConcentricOnboardingLayout variables
     private var _clipPathProvider: ClipPathProvider = ConcentricOnboardingClipPathProvider()
     private var _currentRevealPercent: Float = 100f
-    private var _canvasTranslateX: Float = 0f
+    private var _childrenTranslateX: Float = 0f
+    private var _childrenTranslateY: Float = 0f
+    private var _childrenScaleX: Float = 1f
+    private var _childrenScaleY: Float = 1f
+    private var _mode: ConcentricOnboardingViewPager.Mode =
+        ConcentricOnboardingViewPager.Constants.DEFAULT_MODE
 
     override var clipPathProvider = _clipPathProvider
     override var currentRevealPercent: Float
@@ -29,12 +35,11 @@ open class ConcentricOnboardingLinearLayout : LinearLayout, ConcentricOnboarding
         set(value) {
             revealForPercentage(value)
         }
-    override var canvasTranslateX: Float
-        get() = _canvasTranslateX
-        set(value) {
-            _canvasTranslateX = value
-            invalidate()
-        }
+    override var childrenTranslateX: Float = _childrenTranslateX
+    override var childrenTranslateY: Float = _childrenTranslateY
+    override var childrenScaleX: Float = _childrenScaleX
+    override var childrenScaleY: Float = _childrenScaleY
+    override var mode: ConcentricOnboardingViewPager.Mode = _mode
 
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
@@ -71,17 +76,22 @@ open class ConcentricOnboardingLinearLayout : LinearLayout, ConcentricOnboarding
      * Overriden from View
      */
     override fun dispatchDraw(canvas: Canvas?) {
-        try {
-            canvas?.restore()
-            canvas?.save()
-            canvas?.translate(canvasTranslateX, 0f)
-            super.dispatchDraw(canvas)
-        } finally {
-            canvas?.restore()
-            canvas?.save()
-            path?.let {
-                canvas?.clipPath(it, clipPathProvider.op)
+        if (mode == ConcentricOnboardingViewPager.Mode.SLIDE) {
+            try {
+                canvas?.restore()
+                canvas?.save()
+                canvas?.translate(childrenTranslateX, childrenTranslateY)
+                canvas?.scale(childrenScaleX, childrenScaleY)
+                super.dispatchDraw(canvas)
+            } finally {
+                canvas?.restore()
+                canvas?.save()
+                path?.let {
+                    canvas?.clipPath(it, clipPathProvider.op)
+                }
             }
+        } else {
+            super.dispatchDraw(canvas)
         }
     }
 
