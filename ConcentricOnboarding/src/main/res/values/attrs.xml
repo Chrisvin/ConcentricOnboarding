@@ -6,5 +6,9 @@
             <enum name="slide" value="0" />
             <enum name="reveal" value="1" />
         </attr>
+        <attr name="scaleXFactor" format="float" />
+        <attr name="scaleYFactor" format="float" />
+        <attr name="translationXFactor" format="float" />
+        <attr name="translationYFactor" format="float" />
     </declare-styleable>
 </resources>

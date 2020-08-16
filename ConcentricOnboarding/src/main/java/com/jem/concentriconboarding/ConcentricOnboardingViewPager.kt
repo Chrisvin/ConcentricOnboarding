@@ -1,7 +1,6 @@
 package com.jem.concentriconboarding
 
 import android.content.Context
-import android.graphics.PointF
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.DecelerateInterpolator
@@ -25,8 +24,81 @@ class ConcentricOnboardingViewPager : ViewPager {
         initialize(context, attrs)
     }
 
+    /**
+     * Backing fields for the variables
+     * (to be used when values need to be changed without triggering of `updatePageTransformer`)
+     */
+    private var _mode: ConcentricOnboardingViewPager.Mode = DEFAULT_MODE
+    private var _scaleXFactor: Float = DEFAULT_SCALE_FACTOR
+    private var _scaleYFactor: Float = DEFAULT_SCALE_FACTOR
+    private var _translationXFactor: Float = DEFAULT_TRANSLATION_X_FACTOR
+    private var _translationYFactor: Float = DEFAULT_TRANSLATION_Y_FACTOR
+
+    /**
+     * Mode of the ConcentricOnboarding animation
+     */
+    var mode: ConcentricOnboardingViewPager.Mode
+        get() = _mode
+        set(value) {
+            _mode = value
+            updatePageTransformer()
+        }
+
+    /**
+     * X-axis Scale of children after page has been scrolled away
+     */
+    var scaleXFactor: Float
+        get() = _scaleXFactor
+        set(value) {
+            _scaleXFactor = value
+            updatePageTransformer()
+        }
+
+    /**
+     * Y-axis Scale of children after page has been scrolled away
+     */
+    var scaleYFactor: Float
+        get() = _scaleYFactor
+        set(value) {
+            _scaleYFactor = value
+            updatePageTransformer()
+        }
+
+    /**
+     * X-axis Translation of children after page has been scrolled away.
+     * Determines the speed with which the children are move when swiping.
+     */
+    var translationXFactor: Float
+        get() = _translationXFactor
+        set(value) {
+            _translationXFactor = value
+            updatePageTransformer()
+        }
+
+    /**
+     * Y-axis Translation of children after page has been scrolled away.
+     */
+    var translationYFactor: Float
+        get() = _translationYFactor
+        set(value) {
+            _translationYFactor = value
+            updatePageTransformer()
+        }
+
+    private fun updatePageTransformer() {
+        setPageTransformer(
+            true,
+            ConcentricOnboardingPageTransformer(
+                mode,
+                scaleXFactor,
+                scaleYFactor,
+                translationXFactor,
+                translationYFactor
+            )
+        )
+    }
+
     private fun initialize(context: Context, attrs: AttributeSet?) {
-        var mode = DEFAULT_MODE
         var scrollerDuration = DEFAULT_SCROLLER_DURATION
         attrs?.let {
             val typedArray =
@@ -40,15 +112,31 @@ class ConcentricOnboardingViewPager : ViewPager {
                     R.styleable.ConcentricOnboardingViewPager_mode,
                     0
                 )
-                mode = when (modeInteger) {
+                _mode = when (modeInteger) {
                     0 -> Mode.SLIDE
                     1 -> Mode.REVEAL
                     else -> DEFAULT_MODE
                 }
+                _scaleXFactor = getFloat(
+                    R.styleable.ConcentricOnboardingViewPager_scaleXFactor,
+                    DEFAULT_SCALE_FACTOR
+                )
+                _scaleYFactor = getFloat(
+                    R.styleable.ConcentricOnboardingViewPager_scaleYFactor,
+                    DEFAULT_SCALE_FACTOR
+                )
+                _translationXFactor = getFloat(
+                    R.styleable.ConcentricOnboardingViewPager_translationXFactor,
+                    DEFAULT_TRANSLATION_X_FACTOR
+                )
+                _translationYFactor = getFloat(
+                    R.styleable.ConcentricOnboardingViewPager_translationYFactor,
+                    DEFAULT_TRANSLATION_Y_FACTOR
+                )
             }
         }
         setDuration(scrollerDuration)
-        setMode(mode)
+        updatePageTransformer()
     }
 
     /**
@@ -63,14 +151,6 @@ class ConcentricOnboardingViewPager : ViewPager {
         mScroller.set(this, scroller)
     }
 
-    /**
-     * Set the mode for the ConcentricOnboarding swipe animation
-     * @param mode Can be either Mode.REVEAL or Mode.SLIDE
-     */
-    public fun setMode(mode: ConcentricOnboardingViewPager.Mode) {
-        setPageTransformer(true, ConcentricOnboardingPageTransformer(mode))
-    }
-
     /** ConcentricOnboarding animation mode */
     enum class Mode {
         SLIDE, REVEAL
@@ -78,13 +158,22 @@ class ConcentricOnboardingViewPager : ViewPager {
 
     internal companion object Constants {
         internal const val DEFAULT_SCROLLER_DURATION = 1000
+        internal const val DEFAULT_SCALE_FACTOR = 0.5f
+        internal const val DEFAULT_TRANSLATION_X_FACTOR = 2f
+        internal const val DEFAULT_TRANSLATION_Y_FACTOR = 0.35f
         internal val DEFAULT_MODE = Mode.SLIDE
     }
 
     /**
      * `ConcentricOnboardingPageTransformer` is a custom [ViewPager.PageTransformer] that is used for ConcentricOnboarding reveal.
      */
-    class ConcentricOnboardingPageTransformer(val mode: ConcentricOnboardingViewPager.Mode) :
+    class ConcentricOnboardingPageTransformer(
+        val mode: ConcentricOnboardingViewPager.Mode,
+        val scaleXFactor: Float,
+        val scaleYFactor: Float,
+        val translationXFactor: Float,
+        val translationYFactor: Float
+    ) :
         ViewPager.PageTransformer {
         override fun transformPage(page: View, position: Float) {
             if (page is ConcentricOnboardingLayout) {
@@ -96,10 +185,10 @@ class ConcentricOnboardingViewPager : ViewPager {
                     position < 0 -> {
                         page.translationX = -(page.width * position)
                         if (mode == Mode.SLIDE) {
-                            page.childrenTranslateX = (page.width * position) * 2
-                            page.childrenTranslateY = -(page.height * position) * 0.35f
-                            page.childrenScaleX = 1.0f + (0.5f * position)
-                            page.childrenScaleY = 1.0f + (0.5f * position)
+                            page.childrenTranslateX = (page.width * position) * translationXFactor
+                            page.childrenTranslateY = -(page.height * position) * translationYFactor
+                            page.childrenScaleX = lerp(1.0f, scaleXFactor, -position)
+                            page.childrenScaleY = lerp(1.0f, scaleYFactor, -position)
                         } else {
                             page.childrenTranslateX = 0f
                             page.childrenTranslateY = 0f
@@ -112,10 +201,10 @@ class ConcentricOnboardingViewPager : ViewPager {
                     position <= 1 -> {
                         page.translationX = -(page.width * position)
                         if (mode == Mode.SLIDE) {
-                            page.childrenTranslateX = (page.width * position) * 2
-                            page.childrenTranslateY = (page.height * position) * 0.35f
-                            page.childrenScaleX = 1.0f - (0.5f * position)
-                            page.childrenScaleY = 1.0f - (0.5f * position)
+                            page.childrenTranslateX = (page.width * position) * translationXFactor
+                            page.childrenTranslateY = (page.height * position) * translationYFactor
+                            page.childrenScaleX = lerp(1.0f, scaleXFactor, position)
+                            page.childrenScaleY = lerp(1.0f, scaleYFactor, position)
                         } else {
                             page.childrenTranslateX = 0f
                             page.childrenTranslateY = 0f
@@ -127,6 +216,10 @@ class ConcentricOnboardingViewPager : ViewPager {
                     }
                 }
             }
+        }
+
+        private fun lerp(a: Float, b: Float, t: Float): Float {
+            return (a * (1f - t)) + (b * t)
         }
     }
 }
