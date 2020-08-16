@@ -23,14 +23,39 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.6" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/verticalBottomGuideLine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
     <ImageView
         android:id="@+id/nextButton"
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:background="@drawable/translucent_circle_bg"
+        android:contentDescription="next"
         android:src="@drawable/ic_baseline_navigate_next_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.33"
+        app:layout_constraintStart_toStartOf="@id/verticalBottomGuideLine"
+        app:layout_constraintTop_toBottomOf="@id/horizontalBottomGuideLine"
+        app:layout_constraintVertical_bias="0.5"
+        app:tint="#FFF" />
+
+    <ImageView
+        android:id="@+id/previousButton"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:background="@drawable/translucent_circle_bg"
+        android:contentDescription="previous"
+        android:scaleX="-1"
+        android:src="@drawable/ic_baseline_navigate_next_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/verticalBottomGuideLine"
+        app:layout_constraintHorizontal_bias="0.66"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/horizontalBottomGuideLine"
         app:layout_constraintVertical_bias="0.5"
