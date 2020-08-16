@@ -44,7 +44,7 @@ class ConcentricOnboardingClipPathProvider : ClipPathProvider() {
         val delta = ((1 - progress / LIMIT) * radius)
         return Path().apply {
             addCircle(
-                /*x = */(centerPoint.x + (r + radius - delta)).toFloat(),
+                /*x = */(centerPoint.x + (r - delta)).toFloat(),
                 /*y = */centerPoint.y,
                 /*radius = */r.toFloat(),
                 Path.Direction.CW
@@ -61,7 +61,7 @@ class ConcentricOnboardingClipPathProvider : ClipPathProvider() {
         val delta = (progress / LIMIT) * radius
         return Path().apply {
             addCircle(
-                /*x = */(centerPoint.x - r + radius + delta).toFloat(),
+                /*x = */(centerPoint.x - r + delta).toFloat(),
                 /*y = */centerPoint.y,
                 /*radius = */r.toFloat(),
                 Path.Direction.CW
