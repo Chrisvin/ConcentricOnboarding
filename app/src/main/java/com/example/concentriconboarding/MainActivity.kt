@@ -1,8 +1,8 @@
 package com.example.concentriconboarding
 
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.PointF
 import android.os.Bundle
-import com.jem.concentriconboarding.clippathprovider.ConcentricOnboardingClipPathProvider
+import androidx.appcompat.app.AppCompatActivity
 import com.jem.concentriconboardingdemo.R
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -18,5 +18,18 @@ class MainActivity : AppCompatActivity() {
         // This way users can swipe left or right from the start.
         // Definitely not a good idea for production, but good enough for a demo app.
         viewpager.setCurrentItem(titleArray.count() * 10, false)
+
+        nextButton.post {
+            viewpager.revealCenterPoint =
+                PointF(
+                    nextButton.x,
+                    nextButton.y + nextButton.height / 2
+                )
+            viewpager.revealRadius = nextButton.width / 2
+        }
+
+        nextButton.setOnClickListener {
+            viewpager.setCurrentItem(viewpager.currentItem + 1, true)
+        }
     }
 }
