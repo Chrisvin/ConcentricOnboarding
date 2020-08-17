@@ -9,6 +9,7 @@ import androidx.viewpager.widget.ViewPager
 import com.jem.concentriconboarding.ConcentricOnboardingViewPager.ConcentricOnboardingPageTransformer
 import com.jem.concentriconboarding.base.ConcentricOnboardingLayout
 import com.jem.concentriconboarding.util.FixedSpeedScroller
+import com.jem.concentriconboarding.util.MathUtil.lerp
 import kotlin.math.abs
 
 /**
@@ -191,6 +192,7 @@ class ConcentricOnboardingViewPager : ViewPager {
         internal const val DEFAULT_TRANSLATION_X_FACTOR = 2f
         internal const val DEFAULT_TRANSLATION_Y_FACTOR = 0.35f
         internal const val DEFAULT_REVEAL_RADIUS = 0
+
         // Center point get's converted to view center internally in COClipPathProvider,
         // by checking for Float.MIN_VALUE
         internal val DEFAULT_REVEAL_CENTER_POINT = PointF(Float.MIN_VALUE, Float.MIN_VALUE)
@@ -255,10 +257,6 @@ class ConcentricOnboardingViewPager : ViewPager {
                     }
                 }
             }
-        }
-
-        private fun lerp(a: Float, b: Float, t: Float): Float {
-            return (a * (1f - t)) + (b * t)
         }
     }
 }
