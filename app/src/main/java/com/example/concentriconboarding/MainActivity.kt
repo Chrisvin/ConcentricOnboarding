@@ -62,6 +62,14 @@ class MainActivity : AppCompatActivity() {
             )
             viewpager.setCurrentItem(viewpager.currentItem + 1, true)
         }
+
+        nextButton.post {
+            updateViewPagerReveal(
+                centerX = nextButton.x + nextButton.width / 2,
+                centerY = nextButton.y + nextButton.height / 2,
+                radius = nextButton.width / 2
+            )
+        }
     }
 
     private fun updateViewPagerReveal(centerX: Float, centerY: Float, radius: Int) {
