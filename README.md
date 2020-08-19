@@ -1,7 +1,7 @@
 # ConcentricOnboarding
 Android Concentric Onboarding library
 
- [![License: MIT](https://img.shields.io/badge/License-MIT-silver.svg)](https://opensource.org/licenses/MIT) [![](https://jitpack.io/v/Chrisvin/LiquidSwipe.svg)](https://jitpack.io/#Chrisvin/LiquidSwipe) [![API](https://img.shields.io/badge/API-21%2B-blue.svg?style=flat)](https://android-arsenal.com/api?level=21) 
+ [![License: MIT](https://img.shields.io/badge/License-MIT-silver.svg)](https://opensource.org/licenses/MIT) [![](https://jitpack.io/v/Chrisvin/ConcentricOnboarding.svg)](https://jitpack.io/#Chrisvin/ConcentricOnboarding) [![API](https://img.shields.io/badge/API-21%2B-blue.svg?style=flat)](https://android-arsenal.com/api?level=21) 
 
 | <img src="./screenrecording/slide.gif" height="75%"/> | <img src="./screenrecording/reveal.gif" height="75%"/> |
 | :-: | :-: |
@@ -64,6 +64,31 @@ implementation 'com.github.Chrisvin:ConcentricOnboarding:1.0'
 ```
 
 ### And you're done, easy-peasy. ^_^
+
+## Customization
+### Via XML
+```
+<com.jem.concentriconboarding.ConcentricOnboardingViewPager
+    ...
+    app:mode="reveal" // Default is slide
+    app:scrollerDuration="2000" // Default is 1000
+    app:translationXFactor="3" // Default is 2
+    app:translationYFactor="0.5" // Default is 0.35
+    app:scaleXFactor="0.75" // Default is 0.5
+    app:scaleYFactor="0.75" // Default is 0.5
+    />
+```
+### Via Programmatically
+```
+viewpager.mode = ConcentricOnboardingViewPager.Mode.REVEAL // Default is SLIDE
+viewpager.setDuration(3000) // Default is 1000
+viewpager.translationXFactor = 1.5f // Default is 2f
+viewpager.translationYFactor = 1f // Default is 0.35f
+viewpager.scaleXFactor = 2f // Default is 0.5f
+viewpager.scaleYFactor = 2f // Default is 0.5f
+viewpager.revealCenterPoint = PointF(centerX, centerY) // Default is screen center
+viewpager.revealRadius = radius // Default is 0
+```
 
 ## Creating custom swipe animations
 
