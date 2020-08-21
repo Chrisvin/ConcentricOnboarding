@@ -36,6 +36,7 @@ dependencies {
 
     implementation 'com.airbnb.android:lottie:3.2.0'
 
-    implementation project(':ConcentricOnboarding')
+//    implementation project(':ConcentricOnboarding')
+    implementation 'com.github.Chrisvin:ConcentricOnboarding:1.0'
 
 }
