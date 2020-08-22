@@ -100,7 +100,8 @@ You can create your own swipe animation by extending the [ClipPathProvider](http
 For bugs, questions and discussions please use the [Github Issues](https://github.com/Chrisvin/ConcentricOnboarding/issues).
 
 ## Credits
-1. [Alvaro Fabre](https://lottiefiles.com/tomfabre) - Designer of the lottie animations in the demo app
+1. [Cuberto](https://dribbble.com/shots/6654320-Animated-Onboarding-Screens) - Onboarding design inspiration
+2. [Alvaro Fabre](https://lottiefiles.com/tomfabre) - Designer of the lottie animations in the demo app
 
 ## License
 ```
