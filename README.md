@@ -3,7 +3,7 @@ Android Concentric Onboarding library
 
  [![License: MIT](https://img.shields.io/badge/License-MIT-silver.svg)](https://opensource.org/licenses/MIT) [![](https://jitpack.io/v/Chrisvin/ConcentricOnboarding.svg)](https://jitpack.io/#Chrisvin/ConcentricOnboarding) [![API](https://img.shields.io/badge/API-21%2B-blue.svg?style=flat)](https://android-arsenal.com/api?level=21) 
 
-| <img src="./screenrecording/slide.gif" height="75%"/> | <img src="./screenrecording/reveal.gif" height="75%"/> |
+| <img src="./screenrecording/slide.gif"/> | <img src="./screenrecording/reveal.gif"/> |
 | :-: | :-: |
 | Slide Mode | Reveal Mode |
 
