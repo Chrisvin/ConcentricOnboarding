@@ -9,6 +9,8 @@ Android Concentric Onboarding library
 
 ConcentricOnboarding is a viewpager library that can be used to make awesome onboarding designs.
 
+If you like this, you'll like [LiquidSwipe](https://github.com/Chrisvin/LiquidSwipe) as well.
+
 ## Demo app
 To run the demo project, clone the repository and run it via Android Studio.
 </br>(OR)
