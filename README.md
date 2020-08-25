@@ -37,7 +37,7 @@ implementation 'com.github.Chrisvin:ConcentricOnboarding:1.0'
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.jem.liquidswipe.ConcentricOnboardingViewPager
+    <com.jem.concentriconboarding.ConcentricOnboardingViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
@@ -48,7 +48,7 @@ implementation 'com.github.Chrisvin:ConcentricOnboarding:1.0'
 #### Use a `ConcentricOnboardingLayout` as the base container in the fragment layouts
 ```
 <?xml version="1.0" encoding="utf-8"?>
-<com.jem.liquidswipe.layout.ConcentricOnboardingConstraintLayout
+<com.jem.concentriconboarding.layout.ConcentricOnboardingConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -58,7 +58,7 @@ implementation 'com.github.Chrisvin:ConcentricOnboarding:1.0'
 
     <!--  Fill with your views, just like you would in a normal ConstraintLayout  -->
 
-</com.jem.liquidswipe.layout.ConcentricOnboardingConstraintLayout>
+</com.jem.concentriconboarding.layout.ConcentricOnboardingConstraintLayout>
 
 <!--  Also supports ConcentricOnboardingFrameLayout & ConcentricOnboardingLinearLayout  -->
 ```
